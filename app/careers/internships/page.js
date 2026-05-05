@@ -4,17 +4,16 @@ import SectionLabel from '@/components/ui/SectionLabel';
 import AnimatedSection from '@/components/ui/AnimatedSection';
 import PreFooterCTA from '@/components/sections/PreFooterCTA';
 import JobListing from '@/components/sections/JobListing';
-
 import Link from 'next/link';
-import { getAllJobs } from '@/lib/blog';
+import { getAllInternships } from '@/lib/blog';
 
 export const metadata = {
-  title: 'Careers — Join Our Team | Fat Pig Ventures LLP',
-  description: 'Join Fat Pig Ventures in Kolkata. We are hiring engineers, designers, and marketers who are obsessed with execution and delivering real value.',
+  title: 'Internships — Join Our Team | Fat Pig Ventures LLP',
+  description: 'Explore internship opportunities at Fat Pig Ventures. We are looking for motivated students and graduates to join our team in Kolkata or Remote.',
 };
 
-export default function CareersPage() {
-  const openRoles = getAllJobs();
+export default function InternshipsPage() {
+  const openRoles = getAllInternships();
   return (
     <>
       <Header />
@@ -28,51 +27,13 @@ export default function CareersPage() {
           <div className="container">
             <div style={{ maxWidth: '800px', margin: '0 auto', textAlign: 'center' }}>
               <AnimatedSection>
-                <SectionLabel>CAREERS</SectionLabel>
+                <SectionLabel>INTERNSHIPS</SectionLabel>
                 <h1 style={{ marginBottom: '24px' }}>
-                  Come build the internet with us.
+                  Launch your career with us.
                 </h1>
                 <p style={{ color: 'var(--text-secondary)', fontSize: '18px', lineHeight: '1.6' }}>
-                  We're looking for high-agency individuals who care deeply about their craft and want to see the direct impact of their work.
+                  We offer hands-on internships where you'll work on real projects, learn from experts, and make a tangible impact.
                 </p>
-              </AnimatedSection>
-            </div>
-          </div>
-        </section>
-
-        {/* Culture / Perks */}
-        <section style={{ padding: '80px 0', backgroundColor: 'var(--bg-primary)' }}>
-          <div className="container">
-            <div style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '40px'
-            }}>
-              <AnimatedSection delay={0.1}>
-                <div>
-                  <h3 style={{ fontSize: '20px', marginBottom: '16px' }}>Impact over Hours</h3>
-                  <p style={{ color: 'var(--text-secondary)' }}>
-                    We care about what you ship, not how long you sit at a desk. We offer flexible working hours and focus on outcomes.
-                  </p>
-                </div>
-              </AnimatedSection>
-              
-              <AnimatedSection delay={0.2}>
-                <div>
-                  <h3 style={{ fontSize: '20px', marginBottom: '16px' }}>Direct Client Exposure</h3>
-                  <p style={{ color: 'var(--text-secondary)' }}>
-                    No layers of management hiding you from the client. You talk directly to the founders and teams using your work.
-                  </p>
-                </div>
-              </AnimatedSection>
-
-              <AnimatedSection delay={0.3}>
-                <div>
-                  <h3 style={{ fontSize: '20px', marginBottom: '16px' }}>Continuous Learning</h3>
-                  <p style={{ color: 'var(--text-secondary)' }}>
-                    We work across a variety of tech stacks and industries. The learning curve is steep, but you'll never be bored.
-                  </p>
-                </div>
               </AnimatedSection>
             </div>
           </div>
@@ -83,8 +44,8 @@ export default function CareersPage() {
           <div className="container" style={{ maxWidth: '800px' }}>
             <AnimatedSection>
               <div style={{ textAlign: 'center', marginBottom: '48px' }}>
-                <SectionLabel>OPEN ROLES</SectionLabel>
-                <h2 style={{ marginBottom: '32px' }}>Current Opportunities</h2>
+                <SectionLabel>OPPORTUNITIES</SectionLabel>
+                <h2 style={{ marginBottom: '32px' }}>Current Internships</h2>
                 
                 {/* Toggle Switch */}
                 <div style={{
@@ -98,10 +59,9 @@ export default function CareersPage() {
                   <Link href="/careers" style={{
                     padding: '8px 24px',
                     borderRadius: '100px',
-                    backgroundColor: 'rgba(79, 101, 241, 0.1)',
-                    color: 'var(--accent-primary)',
+                    color: 'var(--text-secondary)',
                     fontSize: '14px',
-                    fontWeight: '600',
+                    fontWeight: '500',
                     textDecoration: 'none',
                     transition: 'all 0.2s ease'
                   }}>
@@ -110,9 +70,10 @@ export default function CareersPage() {
                   <Link href="/careers/internships" style={{
                     padding: '8px 24px',
                     borderRadius: '100px',
-                    color: 'var(--text-secondary)',
+                    backgroundColor: 'rgba(79, 101, 241, 0.1)',
+                    color: 'var(--accent-primary)',
                     fontSize: '14px',
-                    fontWeight: '500',
+                    fontWeight: '600',
                     textDecoration: 'none',
                     transition: 'all 0.2s ease'
                   }}>
@@ -123,11 +84,17 @@ export default function CareersPage() {
             </AnimatedSection>
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-              {openRoles.map((role, index) => (
-                <AnimatedSection key={role.id} delay={index * 0.1}>
-                  <JobListing {...role} />
-                </AnimatedSection>
-              ))}
+              {openRoles.length > 0 ? (
+                openRoles.map((role, index) => (
+                  <AnimatedSection key={role.id} delay={index * 0.1}>
+                    <JobListing {...role} />
+                  </AnimatedSection>
+                ))
+              ) : (
+                <div style={{ textAlign: 'center', padding: '40px', color: 'var(--text-dimmed)' }}>
+                  No active internships at the moment. Check back soon!
+                </div>
+              )}
             </div>
 
             <AnimatedSection delay={0.4}>

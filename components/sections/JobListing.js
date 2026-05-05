@@ -2,7 +2,7 @@
 
 import Button from '../ui/Button';
 
-export default function JobListing({ title, location, type, id }) {
+export default function JobListing({ title, location, type, id, applyUrl }) {
   return (
     <div style={{
       backgroundColor: 'var(--bg-elevated)',
@@ -35,16 +35,34 @@ export default function JobListing({ title, location, type, id }) {
       </div>
       
       <div style={{ borderTop: '1px solid rgba(79,101,241,0.08)', paddingTop: '20px' }}>
-        {/* Placeholder for Apply logic until User provides ATS link or fallback */}
-        <Button 
-          variant="secondary" 
-          onClick={(e) => {
-            e.preventDefault();
-            alert('Application system pending integration. Please email careers@fatpigventures.com');
+        <a 
+          href={applyUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="btn-secondary"
+          style={{
+            display: 'inline-block',
+            padding: '10px 24px',
+            borderRadius: 'var(--radius-sm)',
+            border: '1px solid rgba(79, 101, 241, 0.5)',
+            color: 'var(--text-primary)',
+            textDecoration: 'none',
+            fontSize: '14px',
+            fontWeight: '500',
+            transition: 'all 0.2s ease',
+            backgroundColor: 'rgba(255, 255, 255, 0.02)'
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(79, 101, 241, 0.05)';
+            e.currentTarget.style.color = 'var(--accent-primary)';
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.backgroundColor = 'rgba(255, 255, 255, 0.02)';
+            e.currentTarget.style.color = 'var(--text-primary)';
           }}
         >
           View & Apply
-        </Button>
+        </a>
       </div>
     </div>
   );
