@@ -6,48 +6,40 @@ import PreFooterCTA from '@/components/sections/PreFooterCTA';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
-
-const posts = {
-  'building-mvps-that-scale': {
-    title: 'Building MVPs That Actually Scale',
-    category: 'Engineering',
-    excerpt: 'The common mistake founders make is treating an MVP as throwaway code. Here\'s how to build fast without accumulating crippling tech debt.',
-    publishedAt: '2026-04-15',
-    content: 'Coming soon — this post is under development. Full article content will be available once the CMS integration is complete.',
-  },
-  'growth-marketing-playbook': {
-    title: 'The Growth Marketing Playbook for B2B SaaS',
-    category: 'Marketing',
-    excerpt: 'Forget vanity metrics. We break down the exact funnel strategy we use to drive qualified leads for early-stage SaaS companies.',
-    publishedAt: '2026-04-02',
-    content: 'Coming soon — this post is under development. Full article content will be available once the CMS integration is complete.',
-  },
-  'why-we-chose-nextjs': {
-    title: 'Why We Chose Next.js for Every Client Project in 2026',
-    category: 'Engineering',
-    excerpt: 'After evaluating dozens of frameworks, here\'s our opinionated take on why Next.js remains the best choice for production web apps.',
-    publishedAt: '2026-03-20',
-    content: 'Coming soon — this post is under development. Full article content will be available once the CMS integration is complete.',
-  },
-};
+import { getPostBySlug, getAllPosts } from '@/lib/blog';
+import { MDXRemote } from 'next-mdx-remote/rsc';
 
 export async function generateMetadata({ params }) {
   const { slug } = await params;
-  const post = posts[slug];
-  if (!post) return { title: 'Post Not Found | Fat Pig Ventures' };
-  return {
-    title: `${post.title} | Fat Pig Ventures Blog`,
-    description: post.excerpt,
-  };
+  try {
+    const { frontmatter } = getPostBySlug(slug);
+    return {
+      title: `${frontmatter.title} | Fat Pig Ventures Blog`,
+      description: frontmatter.excerpt,
+    };
+  } catch (e) {
+    return { title: 'Post Not Found | Fat Pig Ventures' };
+  }
+}
+
+export async function generateStaticParams() {
+  const posts = getAllPosts();
+  return posts.map((post) => ({
+    slug: post.slug,
+  }));
 }
 
 export default async function BlogPostPage({ params }) {
   const { slug } = await params;
-  const post = posts[slug];
-
-  if (!post) {
+  
+  let post;
+  try {
+    post = getPostBySlug(slug);
+  } catch (e) {
     notFound();
   }
+
+  const { frontmatter, content } = post;
 
   return (
     <>
@@ -73,18 +65,18 @@ export default async function BlogPostPage({ params }) {
               </Link>
               
               <div style={{ display: 'flex', gap: '16px', alignItems: 'center', marginBottom: '24px' }}>
-                <SectionLabel>{post.category}</SectionLabel>
+                <SectionLabel>{frontmatter.category}</SectionLabel>
                 <span style={{ color: 'var(--text-dimmed)', fontSize: '13px' }}>
-                  {new Date(post.publishedAt).toLocaleDateString()}
+                  {new Date(frontmatter.publishedAt).toLocaleDateString()}
                 </span>
               </div>
               
               <h1 style={{ marginBottom: '24px', fontSize: '40px', lineHeight: '1.2' }}>
-                {post.title}
+                {frontmatter.title}
               </h1>
               
               <p style={{ color: 'var(--text-secondary)', fontSize: '18px', lineHeight: '1.6' }}>
-                {post.excerpt}
+                {frontmatter.excerpt}
               </p>
             </AnimatedSection>
           </div>
@@ -93,8 +85,8 @@ export default async function BlogPostPage({ params }) {
         <section style={{ padding: '80px 0', backgroundColor: 'var(--bg-primary)' }}>
           <div className="container" style={{ maxWidth: '800px' }}>
             <AnimatedSection delay={0.1}>
-              <div style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
-                <p>{post.content}</p>
+              <div className="prose prose-invert" style={{ color: 'var(--text-secondary)', lineHeight: '1.8' }}>
+                <MDXRemote source={content} />
               </div>
             </AnimatedSection>
           </div>
