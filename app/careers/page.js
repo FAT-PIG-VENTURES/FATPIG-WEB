@@ -5,18 +5,15 @@ import AnimatedSection from '@/components/ui/AnimatedSection';
 import PreFooterCTA from '@/components/sections/PreFooterCTA';
 import JobListing from '@/components/sections/JobListing';
 
+import { getAllJobs } from '@/lib/blog';
+
 export const metadata = {
   title: 'Careers — Join Our Team | Fat Pig Ventures LLP',
   description: 'Join Fat Pig Ventures in Kolkata. We are hiring engineers, designers, and marketers who are obsessed with execution and delivering real value.',
 };
 
-const openRoles = [
-  { id: '1', title: 'Senior Frontend Engineer (Next.js/React)', location: 'Kolkata (Hybrid)', type: 'Full-time' },
-  { id: '2', title: 'Technical SEO Specialist', location: 'Remote (India)', type: 'Full-time' },
-  { id: '3', title: 'UI/UX Designer', location: 'Kolkata (Hybrid)', type: 'Full-time' },
-];
-
 export default function CareersPage() {
+  const openRoles = getAllJobs();
   return (
     <>
       <Header />
